@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BlobBackground.css */
+.blob-container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background: #1e1e1e; /* sfondo base scuro */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.blob {
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(100px);
+	opacity: 0.7;
+	animation: moveBlob 20s infinite alternate;
+}
+
+.blob1 {
+	width: 300px;
+	height: 300px;
+	background: #ff6ec7;
+	top: 10%;
+	left: 20%;
+	animation-duration: 25s;
+}
+
+.blob2 {
+	width: 400px;
+	height: 400px;
+	background: #6ec1ff;
+	top: 40%;
+	left: 50%;
+	animation-duration: 35s;
+}
+
+.blob3 {
+	width: 350px;
+	height: 350px;
+	background: #6effa3;
+	top: 60%;
+	left: 30%;
+	animation-duration: 30s;
+}
+
+/* Animazione dei blob */
+@keyframes moveBlob {
+	0% {
+		transform: translate(0, 0) scale(1);
+	}
+	50% {
+		transform: translate(100px, -50px) scale(1.2);
+	}
+	100% {
+		transform: translate(-100px, 50px) scale(0.9);
+	}
+}
+
+/* Contenuto frosted glass */
+.content {
+	position: relative;
+	z-index: 10;
+	padding: 3rem 5rem;
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(15px);
+	color: white;
+	text-align: center;
+	max-width: 600px;
 }
