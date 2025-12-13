@@ -1,0 +1,29 @@
+[
+	{
+		"slideType": "main",
+		"text": {
+			"year": "2025",
+			"h1": "Tutto è pronto per voi, FPC.",
+			"p": "Andiamo."
+		},
+		"images": ["./media/images/logo1"]
+	},
+	{
+		"slideType": "primary",
+		"text": {
+			"year": "2025",
+			"h1": "Il vostro anno in numeri",
+			"p": "Scoprite cosa avete fatto quest'anno."
+		},
+		"images": []
+	},
+	{
+		"slideType": "secondary",
+		"text": {
+			"year": "2025",
+			"h1": "Insieme siamo cresciuti",
+			"p": "Un anno di successi e traguardi."
+		},
+		"images": []
+	}
+]

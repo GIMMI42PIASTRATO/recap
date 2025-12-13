@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Animated3DBackground from "@/components/Animated3DBackground";
 
@@ -11,6 +12,53 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
 	subsets: ["latin"],
+});
+
+const circularStd = localFont({
+	src: [
+		{
+			path: "../public/fonts/circular-std/CircularStd-Black.woff2",
+			style: "normal",
+			weight: "900",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-BlackItalic.woff2",
+			style: "italic",
+			weight: "900",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-Bold.woff2",
+			style: "normal",
+			weight: "bold",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-BoldItalic.woff2",
+			style: "italic",
+			weight: "bold",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-Book.woff2",
+			style: "normal",
+			weight: "normal",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-BookItalic.woff2",
+			style: "italic",
+			weight: "normal",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-Medium.woff2",
+			style: "normal",
+			weight: "500",
+		},
+		{
+			path: "../public/fonts/circular-std/CircularStd-MediumItalic.woff2",
+			style: "italic",
+			weight: "500",
+		},
+	],
+	display: "swap",
+	variable: "--font-circular",
 });
 
 export const metadata: Metadata = {
@@ -26,12 +74,15 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${circularStd.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<Animated3DBackground />
-				<div style={{ position: "relative", zIndex: 2 }}>
+				<main
+					className="font-sans"
+					style={{ position: "relative", zIndex: 2 }}
+				>
 					{children}
-				</div>
+				</main>
 			</body>
 		</html>
 	);
