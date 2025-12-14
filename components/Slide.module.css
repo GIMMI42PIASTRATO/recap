@@ -1235,3 +1235,174 @@
 	background-clip: text;
 	margin-top: 0.5rem;
 }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Stats slide mobile fixes */
+@media (max-width: 640px) {
+	.statsContent {
+		gap: 1rem;
+		padding: 0.5rem;
+	}
+
+	.statsTitle {
+		font-size: clamp(1.2rem, 5vw, 1.8rem);
+		padding: 0 0.5rem;
+	}
+
+	.statsGrid {
+		gap: 0.75rem;
+		padding: 0.5rem;
+		max-width: 100%;
+	}
+
+	.statCard {
+		min-width: calc(50% - 0.5rem);
+		max-width: calc(50% - 0.5rem);
+		flex: 0 0 calc(50% - 0.5rem);
+		padding: 1rem 0.75rem;
+		border-radius: 16px;
+	}
+
+	.statIcon {
+		font-size: 1.8rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.statValue {
+		font-size: clamp(1.8rem, 10vw, 2.5rem);
+	}
+
+	.statSuffix {
+		font-size: 0.7rem;
+		display: block;
+		margin-left: 0;
+		margin-top: 0.15rem;
+	}
+
+	.statLabel {
+		font-size: 0.7rem;
+		letter-spacing: 0.05em;
+		margin-top: 0.25rem;
+	}
+
+	/* Gallery mobile fixes */
+	.galleryContent {
+		gap: 0.75rem;
+		padding: 0.5rem;
+	}
+
+	.galleryTitle {
+		font-size: clamp(1.2rem, 5vw, 1.8rem);
+	}
+
+	.photoGrid {
+		gap: 0.5rem;
+		padding: 0.5rem;
+	}
+
+	.photoItem {
+		border-radius: 12px;
+	}
+
+	/* General slide mobile fixes */
+	.slide {
+		padding: 1rem;
+	}
+
+	.content {
+		gap: 0.75rem;
+	}
+
+	.year {
+		font-size: 0.8rem;
+		padding: 0.35rem 1rem;
+		letter-spacing: 0.2em;
+	}
+
+	.heading {
+		font-size: clamp(1.8rem, 8vw, 2.5rem);
+	}
+
+	.paragraph {
+		font-size: clamp(0.9rem, 3vw, 1.2rem);
+	}
+
+	.imageContainer {
+		margin-top: 1rem;
+	}
+
+	.image {
+		max-width: 200px;
+		max-height: 200px;
+	}
+
+	/* Glow effects smaller on mobile */
+	.glow1 {
+		width: 250px;
+		height: 250px;
+	}
+
+	.glow2 {
+		width: 200px;
+		height: 200px;
+	}
+
+	/* Podium mobile */
+	.statsPodium {
+		gap: 0.5rem;
+		padding: 0.5rem;
+	}
+
+	.podiumItem {
+		padding: 0.75rem 0.5rem;
+	}
+
+	.podiumItem:nth-child(1) {
+		min-height: 140px;
+	}
+
+	.podiumItem:nth-child(2) {
+		min-height: 100px;
+	}
+
+	.podiumItem:nth-child(3) {
+		min-height: 80px;
+	}
+
+	.podiumRank {
+		font-size: 1.5rem;
+	}
+
+	.podiumName {
+		font-size: 0.8rem;
+	}
+
+	.podiumValue {
+		font-size: 1.1rem;
+	}
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+	.statCard {
+		min-width: 100%;
+		max-width: 100%;
+		flex: 0 0 100%;
+	}
+
+	.statsGrid {
+		gap: 0.5rem;
+	}
+
+	.statValue {
+		font-size: 2rem;
+	}
+
+	.photoGrid[data-count="3"],
+	.photoGrid[data-count="4"],
+	.photoGrid[data-count="5"],
+	.photoGrid[data-count="6"] {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}

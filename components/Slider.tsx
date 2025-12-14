@@ -18,7 +18,7 @@ import { z } from "zod";
 import { SlideSchema } from "@/types/slideTypes";
 import Slide from "./Slide";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function Slider() {
 	const {
@@ -27,8 +27,9 @@ export default function Slider() {
 		error,
 	} = z.safeParse(z.array(SlideSchema), unsafeSlidesConfig);
 
-	const { playTrack } = useMusicPlayer();
-	const hasInitialized = useRef(false);
+	const { playTrack, tryAutoplay } = useMusicPlayer();
+	const [showStartOverlay, setShowStartOverlay] = useState(false);
+	const swiperRef = useRef<SwiperType | null>(null);
 
 	// Handle slide change to update music
 	const handleSlideChange = useCallback(
@@ -42,15 +43,34 @@ export default function Slider() {
 		[success, slidesConfig, playTrack]
 	);
 
-	// Play music for first slide on mount
-	useEffect(() => {
-		if (!hasInitialized.current && success && slidesConfig?.[0]?.music) {
-			hasInitialized.current = true;
-			// Delay to ensure user interaction has occurred
-			const timer = setTimeout(() => {
-				playTrack(slidesConfig[0].music);
-			}, 100);
-			return () => clearTimeout(timer);
+	// Store swiper instance and try autoplay
+	const handleSwiper = useCallback(
+		async (swiper: SwiperType) => {
+			swiperRef.current = swiper;
+
+			// Try to autoplay immediately
+			if (success && slidesConfig?.[0]?.music) {
+				const autoplaySucceeded = await tryAutoplay(
+					slidesConfig[0].music
+				);
+				if (!autoplaySucceeded) {
+					// Show overlay only if autoplay was blocked
+					setShowStartOverlay(true);
+				}
+			}
+		},
+		[success, slidesConfig, tryAutoplay]
+	);
+
+	// Handle user clicking the start overlay
+	const handleStartClick = useCallback(() => {
+		setShowStartOverlay(false);
+
+		if (success && slidesConfig && swiperRef.current) {
+			const currentSlide = slidesConfig[swiperRef.current.activeIndex];
+			if (currentSlide?.music) {
+				playTrack(currentSlide.music);
+			}
 		}
 	}, [success, slidesConfig, playTrack]);
 
@@ -60,26 +80,73 @@ export default function Slider() {
 	}
 
 	return (
-		<Swiper
-			// install Swiper modules
-			modules={[Pagination]}
-			direction={"vertical"}
-			pagination={{
-				clickable: true,
-			}}
-			className="h-dvh"
-			onSlideChange={handleSlideChange}
-		>
-			{slidesConfig.map(({ slideType, text, images, stats }, i) => (
-				<SwiperSlide key={i}>
-					<Slide
-						slideType={slideType}
-						text={text}
-						images={images}
-						stats={stats}
-					/>
-				</SwiperSlide>
-			))}
-		</Swiper>
+		<>
+			{showStartOverlay && (
+				<div
+					onClick={handleStartClick}
+					style={{
+						position: "fixed",
+						inset: 0,
+						zIndex: 9999,
+						background: "rgba(0, 0, 0, 0.9)",
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						justifyContent: "center",
+						cursor: "pointer",
+						gap: "1.5rem",
+					}}
+				>
+					<div
+						style={{
+							fontSize: "4rem",
+							animation: "pulse 2s ease-in-out infinite",
+						}}
+					>
+						🎵
+					</div>
+					<p
+						style={{
+							color: "white",
+							fontSize: "1.5rem",
+							fontWeight: 600,
+							textAlign: "center",
+						}}
+					>
+						Tocca per iniziare
+					</p>
+					<p
+						style={{
+							color: "rgba(255,255,255,0.6)",
+							fontSize: "0.9rem",
+						}}
+					>
+						Tap to start
+					</p>
+				</div>
+			)}
+			<Swiper
+				// install Swiper modules
+				modules={[Pagination]}
+				direction={"vertical"}
+				pagination={{
+					clickable: true,
+				}}
+				className="h-dvh"
+				onSwiper={handleSwiper}
+				onSlideChange={handleSlideChange}
+			>
+				{slidesConfig.map(({ slideType, text, images, stats }, i) => (
+					<SwiperSlide key={i}>
+						<Slide
+							slideType={slideType}
+							text={text}
+							images={images}
+							stats={stats}
+						/>
+					</SwiperSlide>
+				))}
+			</Swiper>
+		</>
 	);
 }

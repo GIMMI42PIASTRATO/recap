@@ -163,5 +163,40 @@ export function useMusicPlayer() {
 		}
 	}, []);
 
-	return { playTrack, stopMusic, setVolume };
+	// Try to autoplay - returns true if successful, false if blocked
+	const tryAutoplay = useCallback(
+		async (musicPath: string | undefined): Promise<boolean> => {
+			if (!musicPath) return false;
+
+			// Normalize the path for comparison
+			const normalizedPath = musicPath.startsWith("./")
+				? musicPath.slice(2)
+				: musicPath.startsWith("/")
+				? musicPath.slice(1)
+				: musicPath;
+
+			// Create new audio or reuse existing
+			if (!globalAudio) {
+				globalAudio = new Audio();
+				globalAudio.loop = true;
+			}
+
+			// Use the media API to get the audio URL
+			const audioUrl = getMediaUrl(musicPath);
+			globalAudio.src = audioUrl;
+			currentTrack = normalizedPath;
+
+			try {
+				await globalAudio.play();
+				fadeIn(globalAudio, 0.7);
+				return true;
+			} catch {
+				// Autoplay was blocked
+				return false;
+			}
+		},
+		[fadeIn, getMediaUrl]
+	);
+
+	return { playTrack, stopMusic, setVolume, tryAutoplay };
 }
