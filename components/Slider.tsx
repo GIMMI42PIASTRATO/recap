@@ -9,7 +9,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
+// Import json config
+import unsafeSlidesConfig from "@/slidesconfig.json";
+
+// Import zod and schemas
+import { treeifyError, z } from "zod";
+import { SlideSchema } from "@/types/slideTypes";
+import Slide from "./Slide";
+
 export default function Slider() {
+	const {
+		data: slidesConfig,
+		success,
+		error,
+	} = z.safeParse(z.array(SlideSchema), unsafeSlidesConfig);
+	if (!success) {
+		console.error(`Slide configuration error: ${error.message}`);
+		return;
+	}
+
 	return (
 		<Swiper
 			// install Swiper modules
@@ -18,12 +36,17 @@ export default function Slider() {
 			pagination={{
 				clickable: true,
 			}}
-			className="h-screen"
+			className="h-dvh"
 		>
-			<SwiperSlide>Slide 1</SwiperSlide>
-			<SwiperSlide>Slide 2</SwiperSlide>
-			<SwiperSlide>Slide 3</SwiperSlide>
-			<SwiperSlide>Slide 4</SwiperSlide>
+			{slidesConfig.map(({ slideType, text, images }, i) => (
+				<SwiperSlide key={i}>
+					<Slide
+						slideType={slideType}
+						text={text}
+						images={images}
+					></Slide>
+				</SwiperSlide>
+			))}
 		</Swiper>
 	);
 }

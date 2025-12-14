@@ -42,8 +42,8 @@ function generateShapes(count = 14): ShapeCfg[] {
 			size: 0.6 + rnd * 1.6,
 			speed: 0.15 + rnd * 0.9,
 			phase: rnd * Math.PI * 2,
-			// increase base Y spread so shapes start at more varied vertical positions
-			base: [(rnd - 0.5) * 6.0, (rnd - 0.2) * 3.2, -2 - rnd * 6.0],
+			// shapes shifted down on Y axis (centered lower + offset)
+			base: [(rnd - 0.5) * 6.0, (rnd - 0.5) * 3.2, -2 - rnd * 6.0],
 		});
 	}
 	return out;
