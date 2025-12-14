@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
+import heicConvert from "heic-convert";
 
 // Set your password here or use an environment variable
 const MEDIA_PASSWORD = process.env.MEDIA_PASSWORD || "fpc2025";
@@ -15,6 +16,8 @@ const MIME_TYPES: Record<string, string> = {
 	".webp": "image/webp",
 	".svg": "image/svg+xml",
 	".ico": "image/x-icon",
+	".heic": "image/heic",
+	".heif": "image/heif",
 	// Audio
 	".mp3": "audio/mpeg",
 	".wav": "audio/wav",
@@ -63,11 +66,31 @@ export async function GET(request: NextRequest) {
 		const absolutePath = path.join(process.cwd(), normalizedPath);
 
 		// Read the file
-		const fileBuffer = await readFile(absolutePath);
+		let fileBuffer = await readFile(absolutePath);
 
 		// Determine MIME type
 		const ext = path.extname(absolutePath).toLowerCase();
-		const contentType = MIME_TYPES[ext] || "application/octet-stream";
+		let contentType = MIME_TYPES[ext] || "application/octet-stream";
+
+		// Convert HEIC/HEIF to JPEG for browser compatibility
+		if (ext === ".heic" || ext === ".heif") {
+			try {
+				const arrayBuffer = fileBuffer.buffer.slice(
+					fileBuffer.byteOffset,
+					fileBuffer.byteOffset + fileBuffer.byteLength
+				) as ArrayBuffer;
+				const convertedBuffer = await heicConvert({
+					buffer: arrayBuffer,
+					format: "JPEG",
+					quality: 0.9,
+				});
+				fileBuffer = Buffer.from(convertedBuffer);
+				contentType = "image/jpeg";
+			} catch (convertError) {
+				console.error("Error converting HEIC:", convertError);
+				// Fall back to original file if conversion fails
+			}
+		}
 
 		// Return the file with appropriate headers
 		return new NextResponse(fileBuffer, {
