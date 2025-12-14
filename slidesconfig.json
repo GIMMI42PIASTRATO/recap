@@ -6,16 +6,17 @@
 			"h1": "Tutto è pronto per voi, FPC.",
 			"p": "Andiamo."
 		},
-		"images": ["./media/images/logo1"]
+		"images": ["./media/images/logo1"],
+		"music": "./media/audio/intro.mp3"
 	},
 	{
 		"slideType": "primary",
 		"text": {
-			"year": "2025",
-			"h1": "Il vostro anno in numeri",
-			"p": "Scoprite cosa avete fatto quest'anno."
+			"h1": "✨Quante cose che abbiamo fatto quest'anno✨",
+			"p": "Diamoli un occhiata."
 		},
-		"images": []
+		"images": [],
+		"music": "./media/audio/intro.mp3"
 	},
 	{
 		"slideType": "secondary",
@@ -25,5 +26,58 @@
 			"p": "Un anno di successi e traguardi."
 		},
 		"images": []
+	},
+	{
+		"slideType": "gallery",
+		"text": {
+			"year": "2025",
+			"h1": "I vostri momenti migliori",
+			"p": "Ricordi indimenticabili."
+		},
+		"images": [
+			"./media/images/logo1",
+			"./media/images/logo2",
+			"./media/images/logo1",
+			"./media/images/logo2",
+			"./media/images/logo1",
+			"./media/images/logo2"
+		],
+		"music": "./media/audio/finale.mp3"
+	},
+	{
+		"slideType": "stats",
+		"text": {
+			"year": "2025",
+			"h1": "Le vostre statistiche dell'anno",
+			"p": "Numeri che parlano da soli."
+		},
+		"images": [],
+		"stats": [
+			{
+				"label": "Marco",
+				"value": 47,
+				"icon": "🍺",
+				"suffix": "birre"
+			},
+			{
+				"label": "Luca",
+				"value": 32,
+				"icon": "🍷",
+				"suffix": "bicchieri"
+			},
+			{
+				"label": "Andrea",
+				"value": 28,
+				"icon": "🥃",
+				"suffix": "shot"
+			},
+			{
+				"label": "Paolo",
+				"value": 15,
+				"icon": "🍾",
+				"suffix": "bottiglie"
+			}
+		],
+		"music": "./media/audio/finale.mp3"
 	}
 ]
