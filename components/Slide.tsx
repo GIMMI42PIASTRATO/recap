@@ -6,12 +6,8 @@ import { useMedia } from "@/contexts/MediaContext";
 
 // Helper to get the correct image path with extension
 function getImagePath(imagePath: string): string {
-	// Check if it already has an extension
-	if (/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(imagePath)) {
-		return imagePath;
-	}
-	// Default to .jpg
-	return `${imagePath}.jpg`;
+	// Return the path as-is - the server will resolve the correct extension
+	return imagePath;
 }
 
 // Floating particles component
