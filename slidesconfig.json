@@ -165,5 +165,14 @@
 			}
 		],
 		"music": "./media/audio/intro.mp3"
+	},
+	{
+		"slideType": "primary",
+		"text": {
+			"h1": "🎆Grazie di tutto🎆",
+			"p": "Buon natale e buon anno nuovo"
+		},
+		"images": [],
+		"music": "./media/audio/intro.mp3"
 	}
 ]
