@@ -1,9 +1,44 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { SlideType, StatItemType, RacerType } from "@/types/slideTypes";
 import styles from "./Slide.module.css";
 import { useMedia } from "@/contexts/MediaContext";
+
+// Lightbox Modal Component - rendered via portal to escape Swiper transforms
+function LightboxModal({
+	imageUrl,
+	onClose,
+}: {
+	imageUrl: string;
+	onClose: () => void;
+}) {
+	// Only render on client side
+	if (typeof window === "undefined") return null;
+
+	return createPortal(
+		<div className={styles.lightboxOverlay} onClick={onClose}>
+			<button
+				className={styles.lightboxClose}
+				onClick={onClose}
+				aria-label="Close"
+			>
+				×
+			</button>
+			<div className={styles.lightboxContent}>
+				{/* eslint-disable-next-line @next/next/no-img-element */}
+				<img
+					src={imageUrl}
+					alt="Full size"
+					className={styles.lightboxImage}
+					onClick={(e) => e.stopPropagation()}
+				/>
+			</div>
+		</div>,
+		document.body
+	);
+}
 
 // Helper to get the correct image path with extension
 function getImagePath(imagePath: string): string {
@@ -265,27 +300,10 @@ function GallerySlide({ text, images }: Omit<SlideType, "slideType">) {
 
 			{/* Lightbox Modal */}
 			{selectedImage && (
-				<div
-					className={styles.lightboxOverlay}
-					onClick={() => setSelectedImage(null)}
-				>
-					<button
-						className={styles.lightboxClose}
-						onClick={() => setSelectedImage(null)}
-						aria-label="Close"
-					>
-						×
-					</button>
-					<div className={styles.lightboxContent}>
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
-							src={selectedImage}
-							alt="Full size"
-							className={styles.lightboxImage}
-							onClick={(e) => e.stopPropagation()}
-						/>
-					</div>
-				</div>
+				<LightboxModal
+					imageUrl={selectedImage}
+					onClose={() => setSelectedImage(null)}
+				/>
 			)}
 		</section>
 	);
@@ -775,27 +793,10 @@ function CollageSlide({ text, images }: Omit<SlideType, "slideType">) {
 
 			{/* Lightbox Modal */}
 			{selectedImage && (
-				<div
-					className={styles.lightboxOverlay}
-					onClick={() => setSelectedImage(null)}
-				>
-					<button
-						className={styles.lightboxClose}
-						onClick={() => setSelectedImage(null)}
-						aria-label="Close"
-					>
-						×
-					</button>
-					<div className={styles.lightboxContent}>
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
-							src={selectedImage}
-							alt="Full size"
-							className={styles.lightboxImage}
-							onClick={(e) => e.stopPropagation()}
-						/>
-					</div>
-				</div>
+				<LightboxModal
+					imageUrl={selectedImage}
+					onClose={() => setSelectedImage(null)}
+				/>
 			)}
 		</section>
 	);
