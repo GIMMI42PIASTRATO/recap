@@ -136,16 +136,19 @@ export default function Slider() {
 				onSwiper={handleSwiper}
 				onSlideChange={handleSlideChange}
 			>
-				{slidesConfig.map(({ slideType, text, images, stats }, i) => (
-					<SwiperSlide key={i}>
-						<Slide
-							slideType={slideType}
-							text={text}
-							images={images}
-							stats={stats}
-						/>
-					</SwiperSlide>
-				))}
+				{slidesConfig.map(
+					({ slideType, text, images, stats, racers }, i) => (
+						<SwiperSlide key={i}>
+							<Slide
+								slideType={slideType}
+								text={text}
+								images={images}
+								stats={stats}
+								racers={racers}
+							/>
+						</SwiperSlide>
+					)
+				)}
 			</Swiper>
 		</>
 	);

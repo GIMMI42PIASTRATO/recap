@@ -1,6 +1,6 @@
 "use client";
 
-import { SlideType, StatItemType } from "@/types/slideTypes";
+import { SlideType, StatItemType, RacerType } from "@/types/slideTypes";
 import styles from "./Slide.module.css";
 import { useMedia } from "@/contexts/MediaContext";
 
@@ -390,6 +390,161 @@ function FinaleSlide({ text, images }: Omit<SlideType, "slideType">) {
 	);
 }
 
+// Default race colors for the ring borders
+const RACE_COLORS = [
+	"#FFD700", // Gold - 1st place
+	"#C0C0C0", // Silver - 2nd place
+	"#CD7F32", // Bronze - 3rd place
+	"#6366f1", // Indigo
+	"#ec4899", // Pink
+	"#10b981", // Emerald
+	"#f59e0b", // Amber
+	"#8b5cf6", // Violet
+];
+
+// Race Slide - Racing circles leaderboard
+function RaceSlide({
+	text,
+	racers,
+}: Omit<SlideType, "slideType" | "images"> & { racers?: RacerType[] }) {
+	const { getMediaUrl } = useMedia();
+
+	if (!racers || racers.length === 0) {
+		return (
+			<section className={`${styles.slide} ${styles.raceBg}`}>
+				<div className={styles.content}>
+					<p className={styles.paragraph}>No racers configured</p>
+				</div>
+			</section>
+		);
+	}
+
+	// Sort racers by value (highest first = winner)
+	const sortedRacers = [...racers].sort((a, b) => b.value - a.value);
+	const maxValue = sortedRacers[0].value;
+
+	return (
+		<section className={`${styles.slide} ${styles.raceBg}`}>
+			{/* Animated gradient overlay */}
+			<div
+				className={`${styles.gradientOverlay} ${styles.raceGradient}`}
+			/>
+
+			{/* Glow effects */}
+			<div
+				className={`${styles.glow} ${styles.glow1} ${styles.raceGlow1}`}
+			/>
+			<div
+				className={`${styles.glow} ${styles.glow2} ${styles.raceGlow2}`}
+			/>
+
+			{/* Floating particles */}
+			<Particles />
+
+			{/* Decorative lines */}
+			<div className={`${styles.decorativeLine} ${styles.lineTop}`} />
+			<div className={`${styles.decorativeLine} ${styles.lineBottom}`} />
+
+			{/* Noise texture */}
+			<div className={styles.noise} />
+
+			{/* Content */}
+			<div className={styles.raceContent}>
+				{text.year && <span className={styles.year}>{text.year}</span>}
+
+				{text.h1 && <h1 className={styles.raceTitle}>{text.h1}</h1>}
+
+				{text.p && <p className={styles.paragraph}>{text.p}</p>}
+
+				{/* Race Track */}
+				<div className={styles.raceTrack}>
+					{/* Finish line */}
+					{/* <div className={styles.finishLine} /> */}
+
+					{/* Racing lanes - displayed in columns */}
+					{sortedRacers.map((racer, index) => {
+						const color =
+							racer.color ||
+							RACE_COLORS[index % RACE_COLORS.length];
+						// Calculate how far down each racer goes (winner goes furthest)
+						const raceDistance = (racer.value / maxValue) * 100;
+						// Stagger start times - winner starts first
+						const animationDelay =
+							(sortedRacers.length - 1 - index) * 0.2;
+
+						return (
+							<div
+								key={index}
+								className={styles.raceLane}
+								style={
+									{
+										"--race-distance": `calc(50vh * ${
+											raceDistance / 100
+										})`,
+										"--race-delay": `${animationDelay}s`,
+										"--race-color": color,
+										"--lane-index": index,
+									} as React.CSSProperties
+								}
+							>
+								{/* Racing circle */}
+								<div className={styles.racer}>
+									{/* Outer rings (multiple for depth effect) */}
+									<div className={styles.racerRings}>
+										{[...Array(5)].map((_, ringIndex) => (
+											<div
+												key={ringIndex}
+												className={styles.racerRing}
+												style={
+													{
+														"--ring-index":
+															ringIndex,
+														borderColor: color,
+													} as React.CSSProperties
+												}
+											/>
+										))}
+									</div>
+
+									{/* Profile image */}
+									<div className={styles.racerImageWrapper}>
+										{/* eslint-disable-next-line @next/next/no-img-element */}
+										<img
+											src={getMediaUrl(
+												getImagePath(racer.image)
+											)}
+											alt={racer.name}
+											className={styles.racerImage}
+										/>
+									</div>
+
+									{/* Position badge */}
+									<div
+										className={styles.positionBadge}
+										style={{ backgroundColor: color }}
+									>
+										{index + 1}
+									</div>
+								</div>
+
+								{/* Racer info */}
+								<div className={styles.racerInfo}>
+									<span className={styles.racerName}>
+										{racer.name}
+									</span>
+									<span className={styles.racerValue}>
+										{racer.value}
+									</span>
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</div>
+		</section>
+	);
+}
+
 // Stats Slide - Show statistics with animated counters
 function StatsSlide({
 	text,
@@ -467,7 +622,13 @@ function StatsSlide({
 	);
 }
 
-export default function Slide({ slideType, text, images, stats }: SlideType) {
+export default function Slide({
+	slideType,
+	text,
+	images,
+	stats,
+	racers,
+}: SlideType) {
 	switch (slideType) {
 		case "main":
 			return <MainSlide text={text} images={images} />;
@@ -479,6 +640,8 @@ export default function Slide({ slideType, text, images, stats }: SlideType) {
 			return <GallerySlide text={text} images={images} />;
 		case "stats":
 			return <StatsSlide text={text} stats={stats} />;
+		case "race":
+			return <RaceSlide text={text} racers={racers} />;
 		case "finale":
 			return <FinaleSlide text={text} images={images} />;
 		default:

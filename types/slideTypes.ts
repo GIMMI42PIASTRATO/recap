@@ -13,6 +13,13 @@ export const StatItemSchema = z.object({
 	suffix: z.string().optional(),
 });
 
+export const RacerSchema = z.object({
+	name: z.string(),
+	value: z.number(),
+	image: z.string(),
+	color: z.string().optional(), // Optional ring color
+});
+
 export const SlideSchema = z.object({
 	slideType: z.enum([
 		"main",
@@ -21,13 +28,16 @@ export const SlideSchema = z.object({
 		"gallery",
 		"stats",
 		"finale",
+		"race",
 	]),
 	text: TextSchema,
 	images: z.array(z.string()),
 	music: z.string().optional(),
 	stats: z.array(StatItemSchema).optional(),
+	racers: z.array(RacerSchema).optional(),
 });
 
 export type TextType = z.infer<typeof TextSchema>;
 export type SlideType = z.infer<typeof SlideSchema>;
 export type StatItemType = z.infer<typeof StatItemSchema>;
+export type RacerType = z.infer<typeof RacerSchema>;

@@ -2040,3 +2040,452 @@
 		height: 10px;
 	}
 }
+
+/* ===== RACE SLIDE - RACING CIRCLES LEADERBOARD ===== */
+.raceBg {
+	background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.raceGradient {
+	background: linear-gradient(
+		-45deg,
+		#6366f1,
+		#ec4899,
+		#f59e0b,
+		#10b981,
+		#6366f1
+	);
+	background-size: 400% 400%;
+	animation: gradientShift 12s ease infinite;
+	opacity: 0.3;
+}
+
+.raceGlow1 {
+	background: rgba(99, 102, 241, 0.5);
+}
+
+.raceGlow2 {
+	background: rgba(236, 72, 153, 0.4);
+}
+
+/* Race Content Layout */
+.raceContent {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	max-width: 100%;
+	gap: 1rem;
+	padding: 1.5rem 1rem;
+}
+
+.raceTitle {
+	font-size: clamp(1.3rem, 4vw, 2rem);
+	font-weight: 900;
+	line-height: 1.2;
+	color: white;
+	text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+	animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+	animation-delay: 0.2s;
+	opacity: 0;
+	animation-play-state: paused;
+	background: linear-gradient(135deg, #fff 0%, #e0e7ff 50%, #c7d2fe 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* Play animations only when slide is active */
+:global(.swiper-slide-active) .raceTitle,
+:global(.swiper-slide-active) .racerInfo,
+:global(.swiper-slide-active) .racer,
+:global(.swiper-slide-active) .racerRings,
+:global(.swiper-slide-active) .racerRing,
+:global(.swiper-slide-active) .positionBadge,
+:global(.swiper-slide-active) .racer::before,
+:global(.swiper-slide-active) .racer::after,
+:global(.swiper-slide-active) .raceLane:first-child .positionBadge::after,
+:global(.swiper-slide-active) .raceLane:first-child .racerRings::after {
+	animation-play-state: running;
+}
+
+/* Race Track Container - VERTICAL */
+.raceTrack {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 0.5rem;
+	width: 100%;
+	flex: 1;
+	padding: 1rem 0.5rem;
+	padding-bottom: 60px;
+}
+
+/* Finish Line - HORIZONTAL at bottom */
+.finishLine {
+	position: absolute;
+	left: 5%;
+	right: 5%;
+	bottom: 40px;
+	height: 4px;
+	width: auto;
+	background: repeating-linear-gradient(
+		90deg,
+		#fff 0px,
+		#fff 10px,
+		#000 10px,
+		#000 20px
+	);
+	opacity: 0.8;
+	z-index: 1;
+	border-radius: 2px;
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Individual Race Lane - VERTICAL column */
+.raceLane {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	flex: 1;
+	max-width: 100px;
+	height: 100%;
+	position: relative;
+	z-index: 5;
+}
+
+/* Racer Info at top */
+.racerInfo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	animation: fadeUp 0.8s ease-out forwards;
+	animation-delay: 0.3s;
+	opacity: 0;
+	animation-play-state: paused;
+	order: -1;
+}
+
+.racerName {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: white;
+	text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+	text-align: center;
+}
+
+.racerValue {
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--race-color, #6366f1);
+	text-shadow: 0 0 10px var(--race-color, #6366f1);
+}
+
+/* Racing Circle Container */
+.racer {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	flex-shrink: 0;
+	animation: raceDown 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	animation-delay: var(--race-delay, 0s);
+	opacity: 0;
+	animation-play-state: paused;
+}
+
+@keyframes raceDown {
+	0% {
+		transform: translateY(-50px);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(calc(var(--race-distance, 200px)));
+		opacity: 1;
+	}
+}
+
+/* Outer Rings Container */
+.racerRings {
+	position: absolute;
+	inset: 0;
+	animation: ringsRotate 6s linear infinite;
+	animation-play-state: paused;
+}
+
+@keyframes ringsRotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Individual Ring */
+.racerRing {
+	position: absolute;
+	inset: calc(var(--ring-index, 0) * -6px);
+	border-radius: 50%;
+	border: 2.5px solid currentColor;
+	opacity: calc(1 - var(--ring-index, 0) * 0.18);
+	animation: ringPulse 2s ease-in-out infinite;
+	animation-delay: calc(var(--ring-index, 0) * 0.15s);
+	animation-play-state: paused;
+}
+
+@keyframes ringPulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: calc(1 - var(--ring-index, 0) * 0.18);
+	}
+	50% {
+		transform: scale(1.08);
+		opacity: calc(0.6 - var(--ring-index, 0) * 0.1);
+	}
+}
+
+/* Profile Image Wrapper */
+.racerImageWrapper {
+	position: absolute;
+	inset: 4px;
+	border-radius: 50%;
+	overflow: hidden;
+	background: #1a1a2e;
+	z-index: 10;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Profile Image */
+.racerImage {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	image-orientation: from-image;
+}
+
+/* Position Badge */
+.positionBadge {
+	position: absolute;
+	bottom: -4px;
+	right: -4px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.7rem;
+	font-weight: 900;
+	color: #000;
+	z-index: 20;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+	animation: badgePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+	animation-delay: calc(var(--race-delay, 0s) + 2.5s);
+	transform: scale(0);
+	animation-play-state: paused;
+}
+
+@keyframes badgePop {
+	0% {
+		transform: scale(0);
+	}
+	70% {
+		transform: scale(1.3);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Speed lines effect - VERTICAL */
+.racer::before {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 2px;
+	height: 80px;
+	background: linear-gradient(
+		180deg,
+		transparent,
+		var(--race-color, #6366f1)
+	);
+	opacity: 0;
+	animation: speedLinesVertical 2.5s ease-out forwards;
+	animation-delay: var(--race-delay, 0s);
+	animation-play-state: paused;
+}
+
+.racer::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: calc(50% + 8px);
+	transform: translateX(-50%);
+	width: 1px;
+	height: 50px;
+	background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
+	opacity: 0;
+	animation: speedLinesVertical 2.5s ease-out forwards;
+	animation-delay: calc(var(--race-delay, 0s) + 0.1s);
+	animation-play-state: paused;
+}
+
+@keyframes speedLinesVertical {
+	0% {
+		opacity: 0;
+		height: 0;
+	}
+	20% {
+		opacity: 0.8;
+	}
+	70% {
+		opacity: 0.4;
+		height: 100px;
+	}
+	100% {
+		opacity: 0;
+		height: 120px;
+	}
+}
+
+/* Winner Crown for 1st place */
+.raceLane:first-child .positionBadge::after {
+	content: "👑";
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 1.2rem;
+	animation: crownBounce 1s ease-in-out infinite;
+	animation-delay: 3s;
+	animation-play-state: paused;
+}
+
+@keyframes crownBounce {
+	0%,
+	100% {
+		transform: translateX(-50%) translateY(0);
+	}
+	50% {
+		transform: translateX(-50%) translateY(-5px);
+	}
+}
+
+/* Celebration particles for winner */
+.raceLane:first-child .racerRings::after {
+	content: "";
+	position: absolute;
+	inset: -15px;
+	border-radius: 50%;
+	background: radial-gradient(
+		circle,
+		rgba(255, 215, 0, 0.4) 0%,
+		transparent 70%
+	);
+	animation: winnerGlow 1.5s ease-in-out infinite;
+	animation-delay: 2.5s;
+	opacity: 0;
+	animation-play-state: paused;
+}
+
+@keyframes winnerGlow {
+	0%,
+	100% {
+		opacity: 0;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.3);
+	}
+}
+
+/* ===== RACE SLIDE MOBILE RESPONSIVE ===== */
+@media (max-width: 640px) {
+	.raceContent {
+		gap: 0.75rem;
+		padding: 1rem 0.5rem;
+	}
+
+	.raceTitle {
+		font-size: clamp(1.1rem, 5vw, 1.5rem);
+	}
+
+	.raceTrack {
+		gap: 0.25rem;
+		padding: 0.5rem 0.25rem;
+		padding-bottom: 50px;
+	}
+
+	.finishLine {
+		bottom: 35px;
+		height: 3px;
+	}
+
+	.raceLane {
+		max-width: 80px;
+	}
+
+	.racer {
+		width: 50px;
+		height: 50px;
+	}
+
+	.racerRing {
+		border-width: 2px;
+		inset: calc(var(--ring-index, 0) * -5px);
+	}
+
+	.positionBadge {
+		width: 18px;
+		height: 18px;
+		font-size: 0.6rem;
+	}
+
+	.racerName {
+		font-size: 0.7rem;
+	}
+
+	.racerValue {
+		font-size: 0.65rem;
+	}
+
+	.raceLane:first-child .positionBadge::after {
+		font-size: 1rem;
+		top: -16px;
+	}
+}
+
+@media (max-width: 380px) {
+	.racer {
+		width: 42px;
+		height: 42px;
+	}
+
+	.racerRing {
+		inset: calc(var(--ring-index, 0) * -4px);
+		border-width: 1.5px;
+	}
+
+	.raceLane {
+		max-width: 65px;
+	}
+
+	.racerName {
+		font-size: 0.6rem;
+	}
+}
