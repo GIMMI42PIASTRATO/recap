@@ -622,6 +622,119 @@ function StatsSlide({
 	);
 }
 
+// Collage Slide - Many photos with scattered, floating animations
+function CollageSlide({ text, images }: Omit<SlideType, "slideType">) {
+	const { getMediaUrl } = useMedia();
+
+	// Predefined positions for scattered polaroid effect
+	const getPhotoStyle = (index: number, total: number) => {
+		// Create a scattered but balanced layout
+		const positions = [
+			// Row 1
+			{ x: 8, y: 8, rotate: -12, scale: 1 },
+			{ x: 38, y: 5, rotate: 5, scale: 0.95 },
+			{ x: 68, y: 10, rotate: -8, scale: 1.05 },
+			// Row 2
+			{ x: 5, y: 35, rotate: 8, scale: 0.9 },
+			{ x: 32, y: 30, rotate: -5, scale: 1.1 },
+			{ x: 60, y: 33, rotate: 10, scale: 0.95 },
+			// Row 3
+			{ x: 12, y: 58, rotate: -10, scale: 1 },
+			{ x: 40, y: 55, rotate: 6, scale: 0.95 },
+			{ x: 65, y: 60, rotate: -6, scale: 1 },
+			// Extra positions for more photos
+			{ x: 20, y: 20, rotate: 15, scale: 0.85 },
+			{ x: 50, y: 45, rotate: -15, scale: 0.9 },
+			{ x: 75, y: 38, rotate: 12, scale: 0.88 },
+			{ x: 25, y: 70, rotate: -8, scale: 0.92 },
+			{ x: 55, y: 72, rotate: 7, scale: 0.87 },
+			{ x: 80, y: 65, rotate: -12, scale: 0.9 },
+		];
+
+		const pos = positions[index % positions.length];
+		return {
+			"--photo-x": `${pos.x}%`,
+			"--photo-y": `${pos.y}%`,
+			"--photo-rotate": `${pos.rotate}deg`,
+			"--photo-scale": pos.scale,
+			"--photo-index": index,
+			"--photo-delay": `${index * 0.12}s`,
+			"--float-offset": `${(index % 3) * 0.5}s`,
+			zIndex: total - index,
+		} as React.CSSProperties;
+	};
+
+	return (
+		<section className={`${styles.slide} ${styles.collageBg}`}>
+			{/* Animated gradient overlay */}
+			<div
+				className={`${styles.gradientOverlay} ${styles.collageGradient}`}
+			/>
+
+			{/* Glow effects */}
+			<div
+				className={`${styles.glow} ${styles.glow1} ${styles.collageGlow1}`}
+			/>
+			<div
+				className={`${styles.glow} ${styles.glow2} ${styles.collageGlow2}`}
+			/>
+
+			{/* Floating particles */}
+			<Particles />
+
+			{/* Noise texture */}
+			<div className={styles.noise} />
+
+			{/* Content */}
+			<div className={styles.collageContent}>
+				{text.year && (
+					<span className={`${styles.year} ${styles.collageYear}`}>
+						{text.year}
+					</span>
+				)}
+
+				{text.h1 && <h1 className={styles.collageTitle}>{text.h1}</h1>}
+
+				{text.p && (
+					<p
+						className={`${styles.paragraph} ${styles.collageParagraph}`}
+					>
+						{text.p}
+					</p>
+				)}
+
+				{/* Photo collage area */}
+				{images.length > 0 && (
+					<div className={styles.collageArea}>
+						{images.slice(0, 15).map((image, index) => (
+							<div
+								key={index}
+								className={styles.collagePhoto}
+								style={getPhotoStyle(index, images.length)}
+							>
+								<div className={styles.polaroidFrame}>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={getMediaUrl(getImagePath(image))}
+										alt={`Memory ${index + 1}`}
+										className={styles.collageImage}
+									/>
+									<div className={styles.polaroidShine} />
+								</div>
+							</div>
+						))}
+						{images.length > 15 && (
+							<div className={styles.collageMore}>
+								+{images.length - 15} more memories
+							</div>
+						)}
+					</div>
+				)}
+			</div>
+		</section>
+	);
+}
+
 export default function Slide({
 	slideType,
 	text,
@@ -644,6 +757,8 @@ export default function Slide({
 			return <RaceSlide text={text} racers={racers} />;
 		case "finale":
 			return <FinaleSlide text={text} images={images} />;
+		case "collage":
+			return <CollageSlide text={text} images={images} />;
 		default:
 			return <MainSlide text={text} images={images} />;
 	}

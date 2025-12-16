@@ -29,6 +29,7 @@ export const SlideSchema = z.object({
 		"stats",
 		"finale",
 		"race",
+		"collage",
 	]),
 	text: TextSchema,
 	images: z.array(z.string()),
