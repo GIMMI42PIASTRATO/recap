@@ -62,6 +62,9 @@ async function optimizeImage(
 	// Get image metadata
 	const metadata = await sharpInstance.metadata();
 
+	// Auto-rotate based on EXIF orientation data (fixes rotated phone photos)
+	sharpInstance = sharpInstance.rotate();
+
 	// Always resize to fit within max dimensions for consistent mobile performance
 	sharpInstance = sharpInstance.resize(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT, {
 		fit: "inside", // Maintain aspect ratio, fit within bounds
