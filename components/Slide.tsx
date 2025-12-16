@@ -256,6 +256,140 @@ function GallerySlide({ text, images }: Omit<SlideType, "slideType">) {
 	);
 }
 
+// Firework component for finale slide
+function Fireworks() {
+	return (
+		<div className={styles.fireworksContainer}>
+			{/* Multiple firework bursts */}
+			{[...Array(8)].map((_, i) => (
+				<div
+					key={i}
+					className={`${styles.firework} ${
+						styles[`firework${i + 1}`]
+					}`}
+				>
+					{/* Firework particles */}
+					{[...Array(12)].map((_, j) => (
+						<div key={j} className={styles.fireworkParticle} />
+					))}
+				</div>
+			))}
+			{/* Sparkles */}
+			{[...Array(20)].map((_, i) => (
+				<div
+					key={`sparkle-${i}`}
+					className={`${styles.sparkle} ${
+						styles[`sparkle${(i % 5) + 1}`]
+					}`}
+					style={
+						{
+							left: `${Math.random() * 100}%`,
+							top: `${Math.random() * 100}%`,
+							animationDelay: `${Math.random() * 3}s`,
+						} as React.CSSProperties
+					}
+				/>
+			))}
+		</div>
+	);
+}
+
+// Confetti component for celebration
+function Confetti() {
+	return (
+		<div className={styles.confettiContainer}>
+			{[...Array(50)].map((_, i) => (
+				<div
+					key={i}
+					className={`${styles.confetti} ${
+						styles[`confetti${(i % 6) + 1}`]
+					}`}
+					style={
+						{
+							left: `${Math.random() * 100}%`,
+							animationDelay: `${Math.random() * 5}s`,
+							animationDuration: `${3 + Math.random() * 4}s`,
+						} as React.CSSProperties
+					}
+				/>
+			))}
+		</div>
+	);
+}
+
+// Finale Slide - Thank you with fireworks celebration
+function FinaleSlide({ text, images }: Omit<SlideType, "slideType">) {
+	const { getMediaUrl } = useMedia();
+
+	return (
+		<section className={`${styles.slide} ${styles.finaleBg}`}>
+			{/* Animated gradient overlay */}
+			<div
+				className={`${styles.gradientOverlay} ${styles.finaleGradient}`}
+			/>
+
+			{/* Fireworks animation */}
+			<Fireworks />
+
+			{/* Confetti */}
+			<Confetti />
+
+			{/* Glow effects */}
+			<div
+				className={`${styles.glow} ${styles.glow1} ${styles.finaleGlow1}`}
+			/>
+			<div
+				className={`${styles.glow} ${styles.glow2} ${styles.finaleGlow2}`}
+			/>
+			<div className={`${styles.glow} ${styles.finaleGlow3}`} />
+
+			{/* Decorative lines */}
+			<div className={`${styles.decorativeLine} ${styles.lineTop}`} />
+			<div className={`${styles.decorativeLine} ${styles.lineBottom}`} />
+
+			{/* Noise texture */}
+			<div className={styles.noise} />
+
+			{/* Content */}
+			<div className={styles.finaleContent}>
+				{text.year && (
+					<span className={`${styles.year} ${styles.finaleYear}`}>
+						{text.year}
+					</span>
+				)}
+
+				{text.h1 && (
+					<h1 className={`${styles.heading} ${styles.finaleHeading}`}>
+						{text.h1}
+					</h1>
+				)}
+
+				{text.p && (
+					<p
+						className={`${styles.paragraph} ${styles.finaleParagraph}`}
+					>
+						{text.p}
+					</p>
+				)}
+
+				{images && images.length > 0 && (
+					<div className={styles.finaleImageContainer}>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src={getMediaUrl(getImagePath(images[0]))}
+							alt="Finale image"
+							className={`${styles.image} ${styles.finaleImage}`}
+						/>
+					</div>
+				)}
+
+				{/* Replay/Share CTA */}
+				<div className={styles.finaleEmoji}>🎉</div>
+			</div>
+		</section>
+	);
+}
+
 // Stats Slide - Show statistics with animated counters
 function StatsSlide({
 	text,
@@ -345,6 +479,8 @@ export default function Slide({ slideType, text, images, stats }: SlideType) {
 			return <GallerySlide text={text} images={images} />;
 		case "stats":
 			return <StatsSlide text={text} stats={stats} />;
+		case "finale":
+			return <FinaleSlide text={text} images={images} />;
 		default:
 			return <MainSlide text={text} images={images} />;
 	}

@@ -14,7 +14,14 @@ export const StatItemSchema = z.object({
 });
 
 export const SlideSchema = z.object({
-	slideType: z.enum(["main", "primary", "secondary", "gallery", "stats"]),
+	slideType: z.enum([
+		"main",
+		"primary",
+		"secondary",
+		"gallery",
+		"stats",
+		"finale",
+	]),
 	text: TextSchema,
 	images: z.array(z.string()),
 	music: z.string().optional(),
