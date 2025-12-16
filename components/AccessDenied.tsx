@@ -1,13 +1,6 @@
 "use client";
 
-// import { useMedia } from "@/contexts/MediaContext";
-
 export default function AccessDenied() {
-	// const { isAuthorized } = useMedia();
-
-	// If somehow authorized, don't show this
-	// if (isAuthorized) return null;
-
 	return (
 		<div
 			style={{

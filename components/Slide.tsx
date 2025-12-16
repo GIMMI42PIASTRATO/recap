@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { SlideType, StatItemType, RacerType } from "@/types/slideTypes";
 import styles from "./Slide.module.css";
 import { useMedia } from "@/contexts/MediaContext";
@@ -196,6 +197,7 @@ function SecondarySlide({ text, images }: Omit<SlideType, "slideType">) {
 // Gallery Slide - Photo grid with staggered animations
 function GallerySlide({ text, images }: Omit<SlideType, "slideType">) {
 	const { getMediaUrl } = useMedia();
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 	const imageCount = Math.min(images.length, 6); // Max 6 images
 
 	return (
@@ -234,7 +236,15 @@ function GallerySlide({ text, images }: Omit<SlideType, "slideType">) {
 				{images.length > 0 && (
 					<div className={styles.photoGrid} data-count={imageCount}>
 						{images.slice(0, 6).map((image, index) => (
-							<div key={index} className={styles.photoItem}>
+							<div
+								key={index}
+								className={styles.photoItem}
+								onClick={() =>
+									setSelectedImage(
+										getMediaUrl(getImagePath(image))
+									)
+								}
+							>
 								{/* eslint-disable-next-line @next/next/no-img-element */}
 								<img
 									src={getMediaUrl(getImagePath(image))}
@@ -252,6 +262,31 @@ function GallerySlide({ text, images }: Omit<SlideType, "slideType">) {
 					</div>
 				)}
 			</div>
+
+			{/* Lightbox Modal */}
+			{selectedImage && (
+				<div
+					className={styles.lightboxOverlay}
+					onClick={() => setSelectedImage(null)}
+				>
+					<button
+						className={styles.lightboxClose}
+						onClick={() => setSelectedImage(null)}
+						aria-label="Close"
+					>
+						×
+					</button>
+					<div className={styles.lightboxContent}>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src={selectedImage}
+							alt="Full size"
+							className={styles.lightboxImage}
+							onClick={(e) => e.stopPropagation()}
+						/>
+					</div>
+				</div>
+			)}
 		</section>
 	);
 }
@@ -625,6 +660,7 @@ function StatsSlide({
 // Collage Slide - Many photos with scattered, floating animations
 function CollageSlide({ text, images }: Omit<SlideType, "slideType">) {
 	const { getMediaUrl } = useMedia();
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	// Predefined positions for scattered polaroid effect
 	const getPhotoStyle = (index: number, total: number) => {
@@ -711,6 +747,11 @@ function CollageSlide({ text, images }: Omit<SlideType, "slideType">) {
 								key={index}
 								className={styles.collagePhoto}
 								style={getPhotoStyle(index, images.length)}
+								onClick={() =>
+									setSelectedImage(
+										getMediaUrl(getImagePath(image))
+									)
+								}
 							>
 								<div className={styles.polaroidFrame}>
 									{/* eslint-disable-next-line @next/next/no-img-element */}
@@ -731,6 +772,31 @@ function CollageSlide({ text, images }: Omit<SlideType, "slideType">) {
 					</div>
 				)}
 			</div>
+
+			{/* Lightbox Modal */}
+			{selectedImage && (
+				<div
+					className={styles.lightboxOverlay}
+					onClick={() => setSelectedImage(null)}
+				>
+					<button
+						className={styles.lightboxClose}
+						onClick={() => setSelectedImage(null)}
+						aria-label="Close"
+					>
+						×
+					</button>
+					<div className={styles.lightboxContent}>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src={selectedImage}
+							alt="Full size"
+							className={styles.lightboxImage}
+							onClick={(e) => e.stopPropagation()}
+						/>
+					</div>
+				</div>
+			)}
 		</section>
 	);
 }

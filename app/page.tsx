@@ -15,11 +15,7 @@ function SliderWithMedia() {
 }
 
 function AccessGate() {
-	return (
-		<MediaProvider>
-			<AccessDenied />
-		</MediaProvider>
-	);
+	return <AccessDenied />;
 }
 
 export default function Home({

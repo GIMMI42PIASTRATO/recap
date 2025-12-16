@@ -585,6 +585,14 @@
 	opacity: 0;
 	box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5),
 		0 0 0 1px rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photoItem:hover {
+	transform: scale(1.05);
+	box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.6),
+		0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .photoItem::before {
@@ -2746,5 +2754,95 @@
 
 	.polaroidFrame {
 		padding: 5px 5px 16px 5px;
+	}
+}
+
+/* ===== LIGHTBOX MODAL STYLES ===== */
+
+.lightboxOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.92);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	animation: lightboxFadeIn 0.3s ease-out forwards;
+	cursor: pointer;
+}
+
+.lightboxContent {
+	position: relative;
+	max-width: 90vw;
+	max-height: 85vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: lightboxZoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+		forwards;
+}
+
+.lightboxImage {
+	max-width: 100%;
+	max-height: 85vh;
+	object-fit: contain;
+	border-radius: 8px;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+	cursor: default;
+	image-orientation: from-image;
+}
+
+.lightboxClose {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 44px;
+	height: 44px;
+	border: none;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-radius: 50%;
+	color: white;
+	font-size: 2rem;
+	font-weight: 300;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	z-index: 1001;
+	line-height: 1;
+	padding-bottom: 4px;
+}
+
+.lightboxClose:hover {
+	background: rgba(255, 255, 255, 0.25);
+	transform: scale(1.1);
+}
+
+.lightboxClose:active {
+	transform: scale(0.95);
+}
+
+@keyframes lightboxFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes lightboxZoomIn {
+	from {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
 	}
 }
