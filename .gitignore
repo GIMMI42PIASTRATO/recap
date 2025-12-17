@@ -45,3 +45,6 @@ media/*
 
 # slideconfig
 slidesconfig.json
+
+# projectconfig
+projectconfig.json
