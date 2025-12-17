@@ -1,0 +1,29 @@
+{
+	"metadata": {
+		"title": "My Wrapped 2025",
+		"description": "Your year in review - Relive the best moments of 2025",
+		"keywords": ["wrapped", "2025", "year in review", "memories"],
+		"author": "Your Name",
+		"language": "en",
+		"metadataBase": "https://your-domain.com"
+	},
+	"openGraph": {
+		"title": "My Wrapped 2025",
+		"description": "Discover your Wrapped 2025! 🎉",
+		"siteName": "My Wrapped",
+		"image": "./media/images/og-image.png",
+		"imageAlt": "Wrapped 2025 Preview",
+		"type": "website",
+		"locale": "en_US"
+	},
+	"twitter": {
+		"card": "summary_large_image",
+		"title": "My Wrapped 2025",
+		"description": "Discover your Wrapped 2025! 🎉",
+		"image": "./media/images/og-image.png"
+	},
+	"theme": {
+		"themeColor": "#1a1a2e",
+		"backgroundColor": "#0f0f23"
+	}
+}

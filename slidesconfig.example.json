@@ -1,0 +1,105 @@
+[
+	{
+		"slideType": "main",
+		"text": {
+			"year": "2025",
+			"h1": "Your Year in Review",
+			"p": "Let's go!"
+		},
+		"images": ["./media/images/logo"],
+		"music": "./media/audio/intro.mp3"
+	},
+	{
+		"slideType": "primary",
+		"text": {
+			"h1": "✨ What a year! ✨",
+			"p": "Let's take a look back."
+		},
+		"images": [],
+		"music": "./media/audio/intro.mp3"
+	},
+	{
+		"slideType": "gallery",
+		"text": {
+			"year": "2025",
+			"h1": "Your Best Moments",
+			"p": "Unforgettable memories."
+		},
+		"images": [
+			"./media/images/photo1",
+			"./media/images/photo2",
+			"./media/images/photo3",
+			"./media/images/photo4"
+		],
+		"music": "./media/audio/intro.mp3"
+	},
+	{
+		"slideType": "stats",
+		"text": {
+			"year": "2025",
+			"h1": "Your Stats",
+			"p": "The numbers that defined your year."
+		},
+		"images": [],
+		"stats": [
+			{ "label": "Photos Taken", "value": 1234, "icon": "📸" },
+			{ "label": "Adventures", "value": 42, "icon": "🌍" },
+			{
+				"label": "Friends Met",
+				"value": 100,
+				"icon": "👥",
+				"suffix": "+"
+			}
+		],
+		"music": "./media/audio/intro.mp3"
+	},
+	{
+		"slideType": "collage",
+		"text": {
+			"h1": "All Your Memories",
+			"p": "A year full of moments"
+		},
+		"images": [
+			"./media/images/collage1",
+			"./media/images/collage2",
+			"./media/images/collage3",
+			"./media/images/collage4",
+			"./media/images/collage5",
+			"./media/images/collage6",
+			"./media/images/collage7",
+			"./media/images/collage8",
+			"./media/images/collage9"
+		]
+	},
+	{
+		"slideType": "race",
+		"text": {
+			"h1": "The Leaderboard",
+			"p": "Who came out on top?"
+		},
+		"images": [],
+		"racers": [
+			{
+				"name": "Alice",
+				"value": 120,
+				"image": "./media/images/person1"
+			},
+			{ "name": "Bob", "value": 95, "image": "./media/images/person2" },
+			{
+				"name": "Charlie",
+				"value": 80,
+				"image": "./media/images/person3"
+			},
+			{ "name": "Diana", "value": 65, "image": "./media/images/person4" }
+		]
+	},
+	{
+		"slideType": "finale",
+		"text": {
+			"year": "2025",
+			"h1": "Thank You!",
+			"p": "See you next year!"
+		},
+		"images": []
+	}
+]
