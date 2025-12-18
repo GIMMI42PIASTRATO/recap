@@ -74,6 +74,10 @@ export const metadata: Metadata = {
 		: undefined,
 	title: projectConfig.metadata.title,
 	description: projectConfig.metadata.description,
+	robots: {
+		index: false,
+		follow: false,
+	},
 	keywords: projectConfig.metadata.keywords,
 	authors: projectConfig.metadata.author
 		? [{ name: projectConfig.metadata.author }]
